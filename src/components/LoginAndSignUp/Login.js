@@ -4,13 +4,11 @@ import { useState } from "react";
 import {Link} from "react-router-dom";
 import api from "../../services/api";
 
-export default function SignUp(){
+export default function Login(){
 
     const [formData, setFormData] = useState({
-        name: "",
         email: "",
         password: "",
-        confirmPassword: "",
     });
 
     function handleChange(e) {
@@ -19,18 +17,11 @@ export default function SignUp(){
 
     async function handleSubmit(e) {
         e.preventDefault();
-
-        if (formData.password!==formData.confirmPassword) {
-            alert("As senhas não conferem");
-            return;
-        }
-        const user = {...formData};
-        delete user.confirmPassword;
+    
         try {
-            await api.createUser(formData)
-            alert("Usuário criado com sucesso");
+            const {data} = await api.login(formData)
         }catch(error){
-            alert("Erro ao criar usuário,tente novamente");
+            alert("Erro, tente novamente");
         }
     }
 
@@ -38,13 +29,11 @@ export default function SignUp(){
         <Container>
             <h1>MyWallet</h1>
             <Form onSubmit={handleSubmit}>
-                <Input placeholder="Nome" type="text" onChange={(e)=>handleChange(e)} name = "name" value = {formData.name} required/>
                 <Input placeholder="E-mail" type="email" onChange={(e)=>handleChange(e)} name = "email" value = {formData.email} required/>
                 <Input placeholder="Senha" type="password" onChange={(e)=>handleChange(e)} name = "password" value = {formData.password} required/>
-                <Input placeholder="Confirme a senha" type="password" onChange={(e)=>handleChange(e)} name = "confirmPassword" value = {formData.confirmPassword} required/>
-                <Button type="submit">Cadastrar</Button>
+                <Button type="submit">Entrar</Button>
             </Form>
-        <StyledLink to = "/">Já tem uma conta? Entre agora!</StyledLink>
+        <StyledLink to = "/sign-up">Primeira vez? Cadastre-se!</StyledLink>
         </Container>
     );
 }

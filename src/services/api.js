@@ -5,6 +5,11 @@ async function createUser(user) {
   await axios.post(`${URL}/users`, user);
 }
 
-const api={createUser};
+async function login(data){
+    const token = await axios.post(`${URL}/login`, data);
+    return token;
+}
+
+const api={createUser, login};
 
 export default api;
